@@ -1,0 +1,19 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a jQuery UI filter widget.
+ *
+ * Available variables:
+ * - role: The jQuery UI widget type, accordion or tabs.
+ * - options: The jQuery UI filter options which will be converted to attributes.
+ * - content: The HTML content to be converted into a jQuery UI widget.
+ * - attributes: Data attributes (ie data-ui-*) generated from role and options.
+ *
+ * @see template_preprocess_jquery_ui_filter()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes }}>
+  {{ content }}
+</div>

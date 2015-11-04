@@ -7,10 +7,9 @@
 
 namespace Drupal\jquery_ui_filter\Plugin\Filter;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Template\Attribute;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 
@@ -63,7 +62,7 @@ class jQueryUiFilter extends FilterBase {
     // Track if widget has been found so that we can attached the
     // jquery_ui_filter library and settings.
     $has_widget = FALSE;
-    foreach (jQueryUiFilter::$widgets as $name => $widget) {
+    foreach (self::$widgets as $name => $widget) {
       if (strpos($text, '[' . $name) === FALSE) {
         continue;
       }
@@ -72,30 +71,35 @@ class jQueryUiFilter extends FilterBase {
       // Remove block tags around tokens.
       $text = preg_replace('#<(p|div)[^>]*>\s*(\[/?' . $name . '[^]]*\])\s*</\1>#', '\2', $text);
 
-      // Convert tokens to <div>'s with data-ui-* attributes.
-      $text = preg_replace_callback('#\[' . $name . '([^]]*)?\](.*?)\[/' . $name . '\]#is',  function ($match) use ($name) {
-        // Set data-ui-* attributes from role and options.
-        $attributes = ['data-ui-role' => $name];
-        $options = $this->parseOptions($match[1]);
-        foreach ($options as $name => $value) {
-          $attributes['data-ui-' . $name] = $value;
-        }
-
+      // Convert token wrappers to <div>'s with data-ui-* attributes.
+      $replace_callback = function ($match) use ($name) {
         $build = [
-          '#prefix' => new FormattableMarkup('<div@attributes>', ['@attributes' => new Attribute($attributes)]),
-          '#markup' => $match[2],
-          '#suffix' => '</div>',
+          '#theme' => 'jquery_ui_filter',
+          '#role' => $name,
+          '#options' => $this->parseOptions($match[1]),
+          '#content' => [
+            '#markup' => $match[2],
+            '#allowed_tags' => Xss::getAdminTagList()
+          ],
         ];
-        return \Drupal::service('renderer')->renderPlain($build);
-      }, $text);
+        return \Drupal::service('renderer')->render($build);
+      };
+
+      // Replace wrapper tokens (ie [accordion] ... [/accordion])
+      $text = preg_replace_callback('#\[' . $name . '([^]]*)?\](.*?)\[/' . $name . '\]#is', $replace_callback, $text);
+
+      // Replace separator tokens (ie [accordion])
+      $text = preg_replace_callback('#\[' . $name . '([^]]*)?\](.*)#is', $replace_callback, $text);
     }
 
-    // Associate assets to be attached.
+    // Eventhough the library is attached via
+    // template_preprocess_jquery_ui_filter() we still need to attach it to
+    // the result.
     if ($has_widget) {
-      $result->setAttachments(array(
+      $result->setAttachments([
         'library' => ['jquery_ui_filter/jquery_ui_filter'],
         'drupalSettings' => ['jquery_ui_filter' => \Drupal::config('jquery_ui_filter.settings')->get()],
-      ));
+      ]);
     }
 
     return $result->setProcessedText($text);
@@ -105,19 +109,24 @@ class jQueryUiFilter extends FilterBase {
    * {@inheritdoc}
    */
   public function tips($long = FALSE) {
-    $build = [];
-    foreach ($this->widgets as $name => $widget) {
-      $t_args = [
-        '@title' => $widget['title'],
-        '@name' => $name,
-        '@tag' => \Drupal::config('jquery_ui_filter.settings')->get($name . '.options.headerTag') ?: 'h3',
-        '@href' => "http://jqueryui.com/demos/$name/",
-      ];
-      $build[$name] = [
-        '#markup' => $this->t('Use [@name] and [/@name] with @tag header tags to create a jQuery UI <a href="@href">@title</a> widget.', $t_args),
-      ];
+    if ($long) {
+      $html = '<p>' . $this->t('You can create jQuery UI accordion or tabs by inserting  <code>[accordion]</code> or <code>[tabs]</code> wrappers. Examples:') . '</p>';
+      $html .= '<ul>';
+      foreach (self::$widgets as $name => $widget) {
+        $t_args = [
+          '@title' => $widget['title'],
+          '@name' => $name,
+          '@tag' => \Drupal::config('jquery_ui_filter.settings')->get($name . '.options.headerTag') ?: 'h3',
+          '@href' => "http://jqueryui.com/demos/$name/",
+        ];
+        $html .= '<li>' . $this->t('Use <code>[@name]</code> and <code>[/@name]</code> with <code>&lt;@tag&gt;</code> header tags to create a jQuery UI <a href="@href">@title</a> widget.', $t_args) . '</li>';
+      }
+      $html .= '</ul>';
+      return $html;
     }
-    return $build;
+    else {
+      return '<p>' . $this->t('You can create jQuery UI accordion or tabs by inserting <code>[accordion]</code> or <code>[tabs]</code> token wrappers.') . '</p>';
+    }
   }
 
   /**
@@ -146,6 +155,7 @@ class jQueryUiFilter extends FilterBase {
 
     $options = [];
     foreach ($dom_node->attributes as $attribute_name => $attribute_node) {
+      // Convert empty attributes (ie nothing in the quotes) to 'true' string.
       $options[$attribute_name] = $attribute_node->nodeValue ?: 'true';
     }
     return $options;
