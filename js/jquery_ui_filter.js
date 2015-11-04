@@ -130,6 +130,13 @@
         options[name] = value;
       }
 
+      // Convert custom collapsed option to valid widget options.
+      if (options.collapsed) {
+        options.collapsible = true;
+        options.active = false;
+        delete options.collapsed;
+      }
+
       return options;
     }
   });
