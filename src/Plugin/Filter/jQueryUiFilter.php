@@ -142,15 +142,19 @@ class jQueryUiFilter extends FilterBase {
    *   An associative array of parsed name/value pairs.
    */
   public function parseOptions($text) {
-    // Create a DomElement so that we can parse its attributes as options.
-    $html = Html::load('<div ' . html_entity_decode($text) . ' />');
-    $dom_node = $html->getElementsByTagName('div')->item(0);
-
     $options = [];
-    foreach ($dom_node->attributes as $attribute_name => $attribute_node) {
+
+    // Create a XMLElement so that we can parse its attributes as options.
+    $xml = new \SimpleXMLElement('<element ' . html_entity_decode($text) . '/>');
+    foreach ($xml->attributes() as $attribute_name => $attribute_value) {
+      // Convert camel case to hyphen delimited because HTML5 lowercases all data-* attributes.
+      // See: Drupal.jQueryUiFilter.getOptions.
+      $attribute_name = strtolower(preg_replace('/([a-z])([A-Z])/', '\1-\2', $attribute_name));
+
       // Convert empty attributes (ie nothing in the quotes) to 'true' string.
-      $options[$attribute_name] = $attribute_node->nodeValue ?: 'true';
+      $options[$attribute_name] = $attribute_value ? (string) $attribute_value : 'true';
     }
+
     return $options;
   }
 

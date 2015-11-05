@@ -62,10 +62,6 @@ FEATURES
 INSTALLATION
 ------------
 
-IMPORTANT:
-Make sure your text formats are configured to support <h3> tags.
-The default filter, included with Drupal, removes <H3> tags from filtered text.
-
 1. Copy/upload the jquery_ui_filter.module to the modules directory of your
    Drupal installation.
 
@@ -77,7 +73,10 @@ The default filter, included with Drupal, removes <H3> tags from filtered text.
 4. Enable (check) the jQueryUI filter under the list of filters and save
    the configuration.
 
-5. (optional) Visit the 'Configuration > Content authoring > Text formats and editors > jQuery UI filter'
+5. IMPORTANT: In 'Filter processing order', the 'jQuery UI accordion and
+   tabs widgets' filter must be after the 'Correct faulty and chopped off HTML' filter.
+
+6. (optional) Visit the 'Configuration > Content authoring > Text formats and editors > jQuery UI filter'
    (admin/config/content/formats/jquery_ui_filter).
 
 
@@ -88,9 +87,6 @@ Tabs
 
 - Quick tabs: Create blocks of tabbed views and blocks.
   http://drupal.org/project/quicktabs
-
-- Tabs (jQuery UI tabs): A helper module for creating tabbed pages.
-  http://drupal.org/project/tabs
 
 
 AUTHOR/MAINTAINER

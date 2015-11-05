@@ -132,7 +132,9 @@
           continue;
         }
 
-        var name = widget.attributes[i].nodeName.substring(8);
+        // Convert hyphen delimited to camel case which is used for jQuery UI option.
+        // See: \Drupal\jquery_ui_filter\Plugin\Filter\jQueryUiFilter::parseOptions
+        var name = widget.attributes[i].nodeName.substring(8).replace(/-([a-z])/g, function (i) { return i[1].toUpperCase(); });
         var value = widget.attributes[i].nodeValue;
         // Convert JSON to JavaScript array, object, boolean, number.
         if (value.match(/^(\[.*\]|\{.*\}|true|false|\d+)$/)) {
@@ -214,7 +216,6 @@
       // Set accordion header selector to the custom header tag.
       // This allows the accordion's default H3 header selector to be overridden.
       options.header = options.headerTag.toLowerCase();
-
       return options;
     }
 
