@@ -67,6 +67,7 @@ class jQueryUiFilter extends FilterBase {
       if (strpos($text, '[' . $name) === FALSE) {
         continue;
       }
+
       $has_widget = TRUE;
 
       // Remove block tags around tokens.
@@ -87,9 +88,6 @@ class jQueryUiFilter extends FilterBase {
       $text = str_replace('[/' . $name . ']', '</div>', $text);
     }
 
-    // Eventhough the library is attached via
-    // template_preprocess_jquery_ui_filter() we still need to attach it to
-    // the result.
     if ($has_widget) {
       $result->setAttachments([
         'library' => ['jquery_ui_filter/jquery_ui_filter'],
