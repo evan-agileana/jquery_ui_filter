@@ -10,6 +10,7 @@ namespace Drupal\jquery_ui_filter\Plugin\Filter;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Template\Attribute;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 
@@ -35,10 +36,10 @@ class jQueryUiFilter extends FilterBase {
       'title' => 'Accordion',
       'api' => 'https://api.jqueryui.com/accordion/',
       'options' => [
-        'headerTag' => 'h2',
+        'headerTag' => 'h3',
         'scrollTo' => TRUE,
         'scrollToDuration' => 500,
-        'scrollToOffset' => 0,
+        'scrollToOffset' => 'auto',
       ],
     ],
     'tabs' => [
@@ -48,7 +49,7 @@ class jQueryUiFilter extends FilterBase {
         'headerTag' => 'h3',
         'scrollTo' => TRUE,
         'scrollToDuration' => 500,
-        'scrollToOffset' => 0,
+        'scrollToOffset' => 'auto',
       ],
     ],
   ];
@@ -71,25 +72,19 @@ class jQueryUiFilter extends FilterBase {
       // Remove block tags around tokens.
       $text = preg_replace('#<(p|div)[^>]*>\s*(\[/?' . $name . '[^]]*\])\s*</\1>#', '\2', $text);
 
-      // Convert token wrappers to <div>'s with data-ui-* attributes.
-      $replace_callback = function ($match) use ($name) {
-        $build = [
-          '#theme' => 'jquery_ui_filter',
-          '#role' => $name,
-          '#options' => $this->parseOptions($match[1]),
-          '#content' => [
-            '#markup' => $match[2],
-            '#allowed_tags' => Xss::getAdminTagList()
-          ],
-        ];
-        return \Drupal::service('renderer')->render($build);
-      };
+      // Convert opening [token] to opening <div data-ui-*> tag.
+      $text = preg_replace_callback('#\[' . $name . '([^]]*)?\]#is', function ($match) use ($name) {
+        // Set data-ui-* attributes from role and options.
+        $attributes = new Attribute(['data-ui-role' => $name]);
+        $options = $this->parseOptions($match[1]);
+        foreach ($options as $name => $value) {
+          $attributes->setAttribute('data-ui-' . $name, $value);
+        }
+        return "<div$attributes>";
+      }, $text);
 
-      // Replace wrapper tokens (ie [accordion] ... [/accordion])
-      $text = preg_replace_callback('#\[' . $name . '([^]]*)?\](.*?)\[/' . $name . '\]#is', $replace_callback, $text);
-
-      // Replace separator tokens (ie [accordion])
-      $text = preg_replace_callback('#\[' . $name . '([^]]*)?\](.*)#is', $replace_callback, $text);
+      // Convert closing [/token] to closing </div> tag.
+      $text = str_replace('[/' . $name . ']', '</div>', $text);
     }
 
     // Eventhough the library is attached via

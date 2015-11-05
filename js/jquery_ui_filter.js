@@ -32,6 +32,7 @@
     }
 
     this.init();
+
     if (this.setActive() && this.options.scrollTo) {
       this.scrollTo();
     }
@@ -69,10 +70,22 @@
         if (drupalSettings.jquery_ui_filter[widgetName].options.global) {
           $.extend(
             $.ui[widgetName].prototype.options,
-            drupalSettings.jquery_ui_filter[widgetName].options
+            jQueryUiFilter.customOptions(drupalSettings.jquery_ui_filter[widgetName].options)
           );
         }
       }
+    },
+
+    customOptions: function(options) {
+      if (options.collapsed) {
+        options.collapsible = true;
+        options.active = false;
+      }
+
+      if (options.scrollToOffset == 'auto') {
+        options.scrollToOffset = parseInt($('body').css('padding-top')) + parseInt($('body').css('margin-top'));
+      }
+      return options;
     }
 
   });
@@ -96,7 +109,11 @@
      * @method
      */
     scrollTo: function () {
-      var top = this.$widget.offset().top - this.options.scrollToOffset;
+      var offset = this.options.scrollToOffset;
+      if (offset == 'auto') {
+        offset = parseInt($('body').css('padding-top')) + parseInt($('body').css('margin-top'));
+      }
+      var top = this.$widget.offset().top - offset;
       $('html, body').animate({
         scrollTop: top
       }, this.options.scrollToDuration);
@@ -130,14 +147,7 @@
         options[name] = value;
       }
 
-      // Convert custom collapsed option to valid widget options.
-      if (options.collapsed) {
-        options.collapsible = true;
-        options.active = false;
-        delete options.collapsed;
-      }
-
-      return options;
+      return jQueryUiFilter.customOptions(options);
     }
   });
 
@@ -295,14 +305,18 @@
    */
   Drupal.behaviors.jQueryUiFilter = {
     attach: function (context) {
-      // Initialize tabs and accordion widgets using the data-ui-role attribute.
-      $('[data-ui-role]', context).each(function () {
+      var initialize = function () {
         var role = $(this).attr('data-ui-role');
         var instance = new jQueryUiFilter.widgets[role](this);
         if (instance) {
           jQueryUiFilter.instances.push(instance);
         }
-      });
+      };
+
+      // Initialize nested widgets first
+      // See: http://stackoverflow.com/questions/1542161/jquery-ui-accordions-within-tabs
+      $('[data-ui-role="accordion"] [data-ui-role="tabs"]', context).each(initialize);
+      $('[data-ui-role]', context).each(initialize);
     }
   };
 
