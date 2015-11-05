@@ -114,7 +114,7 @@
             value = JSON.parse(value);
           } catch (error) {
             if (window.console) {
-              window.console.warning(error.message);
+              window.console.error('Unabled to parse ' + value  + '. Error: ' + error.message);
             }
           }
         }

@@ -145,7 +145,13 @@ class jQueryUiFilter extends FilterBase {
     $options = [];
 
     // Create a XMLElement so that we can parse its attributes as options.
-    $xml = new \SimpleXMLElement('<element ' . html_entity_decode($text) . '/>');
+    try {
+      $xml = new \SimpleXMLElement('<element ' . html_entity_decode($text) . '/>');
+    }
+    catch (\Exception $exception) {
+      return [];
+    }
+
     foreach ($xml->attributes() as $attribute_name => $attribute_value) {
       // Convert camel case to hyphen delimited because HTML5 lowercases all data-* attributes.
       // See: Drupal.jQueryUiFilter.getOptions.

@@ -13,8 +13,8 @@ INTRODUCTION
 
 The jQueryUI filter converts static HTML to a jQuery UI accordion or tabs widget.
 
-For example, this module converts the below HTML code into a
-collapsed jQueryUI accordion widget.
+For example, this module converts the below HTML code into a collapsed jQueryUI
+accordion widget.
 
 <p>[accordion collapsed]</p>
 
@@ -33,15 +33,12 @@ Learn more about jQueryUI's accordion and tabs widget.
 - http://jqueryui.com/demos/accordion/
 - http://jqueryui.com/demos/tabs/
 
-Roll your own custom jQueryUI theme
-- http://jqueryui.com/themeroller/
-
 
 USAGE
 -----
 
 Use [accordion] and [/accordion] or [tabs] and [/tabs] to create a jQuery UI
-Accordion or tabs. Using [accordion collapsed] will start with the accordion
+accordion or tabs. Using [accordion collapsed] will start with the accordion
 closed.
 
 
@@ -77,12 +74,52 @@ INSTALLATION
 6. (optional) Visit the 'Configuration > Content authoring > Text formats and editors > jQuery UI filter'
    (admin/config/content/formats/jquery_ui_filter).
 
+NOTES
+-----
+
+For Site Builders
+
+  - Any jQuery UI accordion or tabs option is supported.
+    - http://api.jqueryui.com/accordion/
+    - http://api.jqueryui.com/tabs/
+
+  - The [token] options can contain valid JSON data which will be converted to
+    JavaScript array and objects when a widget is rendered.
+    - JSON data must be valid.
+      https://en.wikipedia.org/wiki/JSON#Example
+    - JSON can be wrapped in single quote instead of double quotes.
+    - JSON parsing errors will logged to the browser's console.
+
+    The below example would create sliding tabs.
+
+    [tabs show='{"effect": "slideDown", "duration": 1000}' hide='{"effect": "slideUp", "duration": 1000}']
+
+For Developers
+
+  - 75% of this module's core code is in jquery_ui_filter.js which transforms
+    HTML5 <div> tags containing data-ui-* attributes into jQuery UI accordion
+    and/or tabs with customize options.
+
+  - The actually filter (\Drupal\jquery_ui_filter\Plugin\Filter\jQueryUiFilter)
+    just transforms [tokens] with options into <div> tags with
+    data-ui-* attributes.
+
+    For example:
+      <p>[accordion collapsed customAttribute="some value"]</p>
+      ...is transformed into..
+      <div data-ui-role-"accordion" data-ui-collapsed="true" data-ui-custom-attributes="some value">
+
+  - All camelCase options will be convert to lower case hyphen delimited
+    attributes, which are support by HTML5. The hyphen delimited attributes will
+    be converted back into camelCase options when the widget is rendered.
+
+  - A JsFiddle example has been setup to allow cross-browser testing and
+    debugging outside of Drupal.
+    http://jsfiddle.net/jrockowitz/raLvc6hj/
 
 
 SIMILAR MODULES
 ---------------
-
-Tabs
 
 - Quick tabs: Create blocks of tabbed views and blocks.
   http://drupal.org/project/quicktabs
