@@ -40,7 +40,7 @@ jQuery UI filter test script
     - Verify tabs are also now collapsed.
       /node/1   
 
-## Verify nested tab and accordion widgets
+## Verify nested tabs and accordion widgets
 
 - Create a test page  
   /node/add/page

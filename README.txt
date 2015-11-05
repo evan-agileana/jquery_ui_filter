@@ -4,9 +4,7 @@ CONTENTS OF THIS FILE
  * Introduction
  * Usage
  * Features
- * Requirements
  * Installation
- * Customization
  * Similar Modules
  * Issues
 
@@ -78,6 +76,7 @@ INSTALLATION
 
 6. (optional) Visit the 'Configuration > Content authoring > Text formats and editors > jQuery UI filter'
    (admin/config/content/formats/jquery_ui_filter).
+
 
 
 SIMILAR MODULES

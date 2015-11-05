@@ -30,14 +30,13 @@
     if (!this.$widget.find(this.options.headerTag).length) {
       return false;
     }
-
-    this.init();
-
-    if (this.setActive() && this.options.scrollTo) {
-      this.scrollTo();
+    else {
+      this.init();
+      if (this.setActive() && this.options.scrollTo) {
+        this.scrollTo();
+      }
+      return true;
     }
-
-    return true;
   }
 
   /**
@@ -65,19 +64,6 @@
       })
     },
 
-    customOptions: function(options) {
-      if (options.collapsed) {
-        options.collapsible = true;
-        options.active = false;
-      }
-
-      if (options.scrollToOffset == 'auto') {
-        options.scrollToOffset = parseInt($('body').css('padding-top')) + parseInt($('body').css('margin-top'));
-      }
-
-      return options;
-    }
-
   });
 
   /**
@@ -99,11 +85,7 @@
      * @method
      */
     scrollTo: function () {
-      var offset = this.options.scrollToOffset;
-      if (offset == 'auto') {
-        offset = parseInt($('body').css('padding-top')) + parseInt($('body').css('margin-top'));
-      }
-      var top = this.$widget.offset().top - offset;
+      var top = this.$widget.offset().top - this.options.scrollToOffset;
       $('html, body').animate({
         scrollTop: top
       }, this.options.scrollToDuration);
@@ -125,6 +107,7 @@
         // See: \Drupal\jquery_ui_filter\Plugin\Filter\jQueryUiFilter::parseOptions
         var name = widget.attributes[i].nodeName.substring(8).replace(/-([a-z])/g, function (i) { return i[1].toUpperCase(); });
         var value = widget.attributes[i].nodeValue;
+
         // Convert JSON to JavaScript array, object, boolean, number.
         if (value.match(/^(\[.*\]|\{.*\}|true|false|\d+)$/)) {
           try {
@@ -138,7 +121,19 @@
         options[name] = value;
       }
 
-      return jQueryUiFilter.customOptions(options);
+      // Expand custom collapsed option into the required collasible and active
+      // options.
+      if (options.collapsed) {
+        options.collapsible = true;
+        options.active = false;
+      }
+
+      // Calculate auto scroll to offset.
+      if (options.scrollToOffset == 'auto') {
+        options.scrollToOffset = parseInt($('body').css('padding-top')) + parseInt($('body').css('margin-top'));
+      }
+
+      return options;
     }
   });
 
@@ -303,10 +298,10 @@
         }
       };
 
-      // Initialize nested widgets first
+      // Initialize tabs nested inside accordion widgets first.
       // See: http://stackoverflow.com/questions/1542161/jquery-ui-accordions-within-tabs
-      $('[data-ui-role="accordion"] [data-ui-role="tabs"]', context).each(initialize);
-      $('[data-ui-role]', context).each(initialize);
+      $('[data-ui-role="accordion"] [data-ui-role="tabs"]', context).once('jquery-ui-filter').each(initialize);
+      $('[data-ui-role]', context).once('jquery-ui-filter').each(initialize);
     }
   };
 
