@@ -65,17 +65,6 @@
       })
     },
 
-    setDefaultOptions: function () {
-      for (var widgetName in jQueryUiFilter.widgets) {
-        if (drupalSettings.jquery_ui_filter[widgetName].options.global) {
-          $.extend(
-            $.ui[widgetName].prototype.options,
-            jQueryUiFilter.customOptions(drupalSettings.jquery_ui_filter[widgetName].options)
-          );
-        }
-      }
-    },
-
     customOptions: function(options) {
       if (options.collapsed) {
         options.collapsible = true;
@@ -85,6 +74,7 @@
       if (options.scrollToOffset == 'auto') {
         options.scrollToOffset = parseInt($('body').css('padding-top')) + parseInt($('body').css('margin-top'));
       }
+
       return options;
     }
 
@@ -123,8 +113,7 @@
      * @method
      */
     getOptions: function () {
-      // Note: headerTag is the only required option.
-      var options = $.extend({}, {headerTag: 'h3'}, drupalSettings.jquery_ui_filter[this.role].options);
+      var options = $.extend({}, drupalSettings.jquery_ui_filter[this.role].options);
 
       var widget = this.$widget[0];
       for (var i = 0; i < widget.attributes.length; i++) {
@@ -320,9 +309,6 @@
       $('[data-ui-role]', context).each(initialize);
     }
   };
-
-  // Set default options.
-  jQueryUiFilter.setDefaultOptions();
 
   // Hashchange event handler
   $(window).on('hashchange', jQueryUiFilter.setActive);

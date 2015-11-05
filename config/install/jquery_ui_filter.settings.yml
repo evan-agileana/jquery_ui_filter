@@ -4,11 +4,9 @@ accordion:
     scrollTo: true
     scrollToDuration: 500
     scrollToOffset: auto
-  global: 0
 tabs:
   options:
     headerTag: h3
     scrollTo: true
     scrollToDuration: 500
     scrollToOffset: auto
-  global: 0
