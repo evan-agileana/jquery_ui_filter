@@ -142,25 +142,26 @@ class jQueryUiFilter extends FilterBase {
    *   An associative array of parsed name/value pairs.
    */
   public function parseOptions($text) {
+    // Decode special characters.
+    $text = html_entity_decode($text);
+
+    // Convert decode &nbsp; to expected ASCII code 32 character.
+    // See: http://stackoverflow.com/questions/6275380/does-html-entity-decode-replaces-nbsp-also-if-not-how-to-replace-it
+    $text = str_replace("\xA0", ' ', $text);
+
+    // Convert camel case to hyphen delimited because HTML5 lowercases all data-* attributes.
+    // See: Drupal.jQueryUiFilter.getOptions.
+    $text = strtolower(preg_replace('/([a-z])([A-Z])/', '\1-\2', $text));
+
+    // Create a DomElement so that we can parse its attributes as options.
+    $html = Html::load('<div ' . $text . ' />');
+    $dom_node = $html->getElementsByTagName('div')->item(0);
+
     $options = [];
-
-    // Create a XMLElement so that we can parse its attributes as options.
-    try {
-      $xml = new \SimpleXMLElement('<element ' . html_entity_decode($text) . '/>');
+    foreach ($dom_node->attributes as $attribute_name => $attribute_node) {
+      // Convert empty attributes (ie nothing inside the quotes) to 'true' string.
+      $options[$attribute_name] = $attribute_node->nodeValue ?: 'true';
     }
-    catch (\Exception $exception) {
-      return [];
-    }
-
-    foreach ($xml->attributes() as $attribute_name => $attribute_value) {
-      // Convert camel case to hyphen delimited because HTML5 lowercases all data-* attributes.
-      // See: Drupal.jQueryUiFilter.getOptions.
-      $attribute_name = strtolower(preg_replace('/([a-z])([A-Z])/', '\1-\2', $attribute_name));
-
-      // Convert empty attributes (ie nothing in the quotes) to 'true' string.
-      $options[$attribute_name] = $attribute_value ? (string) $attribute_value : 'true';
-    }
-
     return $options;
   }
 
