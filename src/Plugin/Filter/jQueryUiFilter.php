@@ -37,6 +37,7 @@ class jQueryUiFilter extends FilterBase {
       'api' => 'https://api.jqueryui.com/accordion/',
       'options' => [
         'headerTag' => 'h3',
+        'mediaType' => 'screen',
         'scrollTo' => TRUE,
         'scrollToDuration' => 500,
         'scrollToOffset' => 'auto',
@@ -47,6 +48,7 @@ class jQueryUiFilter extends FilterBase {
       'api' => 'https://api.jqueryui.com/tabs/',
       'options' => [
         'headerTag' => 'h3',
+        'mediaType' => 'screen',
         'scrollTo' => TRUE,
         'scrollToDuration' => 500,
         'scrollToOffset' => 'auto',

@@ -51,9 +51,9 @@ FEATURES
 
 - Supports all jQuery UI accordion and tabs options.
 - Adds bookmark support to accordions and tabs.
-- Scrolls to bookmarked accordion or tab.
+- Scrolls to bookmarked accordion or tabs.
 - Gracefully degrades when JavaScript is disabled.
-
+- Defaults to original markup when a accordion or tabs widget is printed.
 
 INSTALLATION
 ------------

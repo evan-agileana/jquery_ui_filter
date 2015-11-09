@@ -20,23 +20,34 @@
     }
 
     this.$widget = $(node);
-    this.role = this.$widget.attr('data-ui-role');
     this.options = this.getOptions();
+    this.role = this.$widget.attr('data-ui-role');
+    this.id = 'jquery-ui-filter-' + this.role + '-' + jQueryUiFilter.instances.length;
 
     // DEBUG:
     // if (window.console) {console.log(node); console.log(this.role); console.log(this.options);}
 
     // Don't initialize the widget if there are no instances of the header tag.
     if (!this.$widget.find(this.options.headerTag).length) {
-      return false;
+      return;
     }
-    else {
-      this.init();
-      if (this.setActive() && this.options.scrollTo) {
-        this.scrollTo();
-      }
-      return true;
+
+    // Clone $widget before it is intialized.
+    this.$source = this.$widget.clone();
+
+    // Add unique class to $source and $widget.
+    this.$source.addClass(this.id + '-source');
+    this.$widget.addClass(this.id + '-widget');
+
+    // Initialialize media type and widget.
+    this.initMediaType();
+    this.initWidget();
+
+    if (this.setActive() && this.options.scrollTo) {
+      this.scrollTo();
     }
+
+    jQueryUiFilter.instances.push(this);
   }
 
   /**
@@ -74,12 +85,28 @@
     /**
      * @method
      */
-    init: function () {return false},
+    initWidget: function () {return false},
 
     /**
      * @method
      */
     setActive: function () {return false},
+
+    /**
+     * @method
+     */
+    initMediaType: function() {
+      // Add media type query support.
+      if (!this.options.mediaType || this.options.mediaType == 'all') {
+        return;
+      }
+
+      this.$source.insertAfter(this.$widget);
+
+      document.querySelector('style').textContent +=
+        '@media ' + this.options.mediaType + '{.' + this.id + '-source{display:none}}' +
+        '@media not ' + this.options.mediaType + '{.' + this.id + '-widget{display:none}}';
+    },
 
     /**
      * @method
@@ -157,7 +184,7 @@
     /**
      * @method
      */
-    init: function () {
+    initWidget: function () {
       var $widget = this.$widget,
         options = this.options,
         $container;
@@ -225,7 +252,7 @@
     /**
      * @method
      */
-    init: function () {
+    initWidget: function () {
       var $widget = this.$widget,
         options = this.options,
         id,
@@ -292,10 +319,7 @@
     attach: function (context) {
       var initialize = function () {
         var role = $(this).attr('data-ui-role');
-        var instance = new jQueryUiFilter.widgets[role](this);
-        if (instance) {
-          jQueryUiFilter.instances.push(instance);
-        }
+        new jQueryUiFilter.widgets[role](this);
       };
 
       // Initialize tabs nested inside accordion widgets first.
