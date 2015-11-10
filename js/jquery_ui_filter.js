@@ -20,8 +20,8 @@
     }
 
     this.$widget = $(node);
-    this.options = this.getOptions();
     this.role = this.$widget.attr('data-ui-role');
+    this.options = this.getOptions();
     this.id = 'jquery-ui-filter-' + this.role + '-' + jQueryUiFilter.instances.length;
 
     // DEBUG:
@@ -103,9 +103,10 @@
 
       this.$source.insertAfter(this.$widget);
 
-      document.querySelector('style').textContent +=
+      $('head').append('<style type="text/css">' +
         '@media ' + this.options.mediaType + '{.' + this.id + '-source{display:none}}' +
-        '@media not ' + this.options.mediaType + '{.' + this.id + '-widget{display:none}}';
+        '@media not ' + this.options.mediaType + '{.' + this.id + '-widget{display:none}}' +
+        '</style>');
     },
 
     /**
