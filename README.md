@@ -53,7 +53,7 @@ FEATURES
 - Adds bookmark support to accordions and tabs.
 - Scrolls to bookmarked accordion or tabs.
 - Gracefully degrades when JavaScript is disabled.
-- Defaults to original markup when a accordion or tabs widget is printed.
+- Defaults to original markup when an accordion or tabs widget is printed.
 
 INSTALLATION
 ------------
