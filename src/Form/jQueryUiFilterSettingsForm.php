@@ -20,7 +20,7 @@ class jQueryUiFilterSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormID() {
+  public function getFormId() {
     return 'jquery_ui_filter_settings_form';
   }
 
@@ -45,7 +45,7 @@ class jQueryUiFilterSettingsForm extends ConfigFormBase {
 
     $config = $this->config('jquery_ui_filter.settings');
     $form['jquery_ui_filter'] = [
-      '#tree' => TRUE
+      '#tree' => TRUE,
     ];
 
     foreach (jQueryUiFilter::$widgets as $name => $widget) {
@@ -72,7 +72,7 @@ class jQueryUiFilterSettingsForm extends ConfigFormBase {
       $form['jquery_ui_filter'][$name]['options']  = [
         '#type' => 'textarea',
         '#title' => $this->t('Options (YAML)'),
-        '#description' => drupal_render($options_description),
+        '#description' => \Drupal::service('renderer')->render($options_description),
         '#default_value' => Yaml::encode(($config->get($name . '.options') ?: []) + $widget['options']),
         "#rows" => 6,
       ];
@@ -107,7 +107,7 @@ class jQueryUiFilterSettingsForm extends ConfigFormBase {
 
     $data = $form_state->getValue('jquery_ui_filter');
     foreach (jQueryUiFilter::$widgets as $name => $widget) {
-      $data[$name]['options'] = (Yaml::decode($data[$name]['options']) ?: [])  + $widget['options'];
+      $data[$name]['options'] = (Yaml::decode($data[$name]['options']) ?: []) + $widget['options'];
     }
     $config->setData($data);
     $config->save();

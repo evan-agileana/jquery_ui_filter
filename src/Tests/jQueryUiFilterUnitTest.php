@@ -4,11 +4,12 @@
  * @file
  * Definition of Drupal\jquery_ui_filter\Tests\jQueryUiFilterUnitTest.
  *
- * Copied from \Drupal\filter\Tests\FilterUnitTest
+ * Copied from \Drupal\filter\Tests\FilterUnitTest.
  */
 
 namespace Drupal\jquery_ui_filter\Tests;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\filter\FilterPluginCollection;
 use Drupal\filter\Plugin\FilterInterface;
 use Drupal\Component\Utility\Html;
@@ -101,7 +102,7 @@ class jQueryUiFilterUnitTest extends KernelTestBase {
       '<div>[accordion < &lt;&nbsp;option=&quot;value&quot;]</div>' => [
         '<div data-ui-role="accordion" data-ui-option="value">' => TRUE,
       ],
-      // Using JSON in option
+      // Using JSON in option.
       '<div>[accordion json=\'{"name":"value"}\']</div>' => [
         '<div data-ui-role="accordion" data-ui-json="{&quot;name&quot;:&quot;value&quot;}">' => TRUE,
       ],
@@ -118,7 +119,7 @@ class jQueryUiFilterUnitTest extends KernelTestBase {
    *
    * @param FilterInterface $filter
    *   A input filter object.
-   * @param $tests
+   * @param array $tests
    *   An associative array, whereas each key is an arbitrary input string and
    *   each value is again an associative array whose keys are filter output
    *   strings and whose values are Booleans indicating whether the output is
@@ -134,20 +135,20 @@ class jQueryUiFilterUnitTest extends KernelTestBase {
    * );
    * @endcode
    */
-  function assertFilteredString($filter, $tests) {
+  protected function assertFilteredString(FilterInterface $filter, array $tests) {
     foreach ($tests as $source => $tasks) {
       $result = $filter->process($source, $filter)->getProcessedText();
       foreach ($tasks as $value => $is_expected) {
         // Not using assertIdentical, since combination with strpos() is hard to grok.
         if ($is_expected) {
-          $success = $this->assertTrue(strpos($result, $value) !== FALSE, format_string('@source: @value found. Filtered result: @result.', array(
+          $success = $this->assertTrue(strpos($result, $value) !== FALSE, new FormattableMarkup('@source: @value found. Filtered result: @result.', array(
             '@source' => var_export($source, TRUE),
             '@value' => var_export($value, TRUE),
             '@result' => var_export($result, TRUE),
           )));
         }
         else {
-          $success = $this->assertTrue(strpos($result, $value) === FALSE, format_string('@source: @value not found. Filtered result: @result.', array(
+          $success = $this->assertTrue(strpos($result, $value) === FALSE, new FormattableMarkup('@source: @value not found. Filtered result: @result.', array(
             '@source' => var_export($source, TRUE),
             '@value' => var_export($value, TRUE),
             '@result' => var_export($result, TRUE),

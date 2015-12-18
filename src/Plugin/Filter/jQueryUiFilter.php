@@ -8,9 +8,9 @@
 namespace Drupal\jquery_ui_filter\Plugin\Filter;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 
@@ -27,7 +27,7 @@ use Drupal\filter\Plugin\FilterBase;
 class jQueryUiFilter extends FilterBase {
 
   /**
-   * Supported jQuery UI widgets
+   * Supported jQuery UI widgets.
    *
    * @var array
    */
@@ -129,7 +129,7 @@ class jQueryUiFilter extends FilterBase {
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $form['settings'] = [
-      '#markup' => $this->t('See the <a href="@href">jQuery UI filter</a> settings form to modify the accordion and tabs widget\'s global settings', ['@href' => \Drupal::url('jquery_ui_filter.settings')]),
+      '#markup' => $this->t('See the <a href="@href">jQuery UI filter</a> settings form to modify the accordion and tabs widget\'s global settings', ['@href' => Url::fromRoute('jquery_ui_filter.settings')]),
     ];
     return $form;
   }
@@ -151,7 +151,8 @@ class jQueryUiFilter extends FilterBase {
     // See: http://stackoverflow.com/questions/6275380/does-html-entity-decode-replaces-nbsp-also-if-not-how-to-replace-it
     $text = str_replace("\xA0", ' ', $text);
 
-    // Convert camel case to hyphen delimited because HTML5 lowercases all data-* attributes.
+    // Convert camel case to hyphen delimited because HTML5 lower cases all
+    // data-* attributes.
     // See: Drupal.jQueryUiFilter.getOptions.
     $text = strtolower(preg_replace('/([a-z])([A-Z])/', '\1-\2', $text));
 

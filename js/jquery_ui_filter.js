@@ -73,7 +73,7 @@
       $.each(jQueryUiFilter.instances, function () {
         this.setActive();
       })
-    },
+    }
 
   });
 
@@ -142,7 +142,7 @@
             value = JSON.parse(value);
           } catch (error) {
             if (window.console) {
-              window.console.error('Unabled to parse ' + value  + '. Error: ' + error.message);
+              window.console.error('Unable to parse ' + value  + '. Error: ' + error.message);
             }
           }
         }
@@ -205,7 +205,7 @@
     /**
      * @method
      */
-    setActive: function (scrollTo) {
+    setActive: function () {
       if (!location.hash) {
         return false;
       }
