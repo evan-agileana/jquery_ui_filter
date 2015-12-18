@@ -1,6 +1,6 @@
 name: jQuery UI filter
 type: module
-description: Converts static HTML to a JQuery UI Accordion or Tabs widget.
+description: Converts static HTML to a jQuery UI Accordion or Tabs widget.
 package: Input filters
 version: VERSION
 core: 8.x
