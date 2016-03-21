@@ -95,6 +95,7 @@ class jQueryUiFilter extends FilterBase {
         'library' => ['jquery_ui_filter/jquery_ui_filter'],
         'drupalSettings' => ['jquery_ui_filter' => \Drupal::config('jquery_ui_filter.settings')->get()],
       ]);
+      $result->addCacheableDependency(\Drupal::config('jquery_ui_filter.settings'));
     }
 
     return $result->setProcessedText($text);
