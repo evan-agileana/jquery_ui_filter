@@ -48,7 +48,7 @@ Steps for creating a new release
 
 [Git Release Notes for Drush](https://www.drupal.org/project/grn)
 
-    drush release-notes 8.x-1.0-VERSION 8.x-1.x
+    drush release-notes 8.x-2.0-VERSION 8.x-2.x
 
 
 5. Tag and create a new release
@@ -56,9 +56,9 @@ Steps for creating a new release
 
 [Tag a release](https://www.drupal.org/node/1066342)
 
-    git tag 8.x-1.0-VERSION
+    git tag 8.x-2.0-VERSION
     git push --tags
-    git push origin tag 8.x-1.0-VERSION
+    git push origin tag 8.x-2.0-VERSION
 
 [Create new release](https://www.drupal.org/node/add/project-release/1418164)
 
