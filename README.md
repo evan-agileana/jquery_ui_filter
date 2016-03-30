@@ -104,7 +104,7 @@ Notes
 
 ###  For Developers
 
-  - 75% of this module's core code is in jquery_ui_filter.js, which transforms
+  - 75% of this module's core code is in jquery\_ui\_filter.js, which transforms
     HTML5 <div> tags containing data-ui-* attributes into jQuery UI accordion
     and/or tabs with customize options.
 
@@ -129,7 +129,7 @@ Notes
 Similar Modules
 ---------------
 
-- [Quick tabs](http://drupal.org/project/quicktabs)   
+- [Quick tabs](http://drupal.org/project/quicktabs)  
   Create blocks of tabbed views and blocks.
   
 
