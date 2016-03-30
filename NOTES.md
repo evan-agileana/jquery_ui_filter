@@ -39,7 +39,7 @@ Steps for creating a new release
 
 [SimpleTest](https://www.drupal.org/node/645286)
 
-    # Run all test included the jquery_ui_filter.module 
+    # Run all tests
     php core/scripts/run-tests.sh --url http://localhost/d8_dev --module jquery_ui_filter
 
 
