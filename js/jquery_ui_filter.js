@@ -32,14 +32,14 @@
       return;
     }
 
-    // Clone $widget before it is intialized.
+    // Clone $widget before it is initialized.
     this.$source = this.$widget.clone();
 
     // Add unique class to $source and $widget.
     this.$source.addClass(this.id + '-source');
     this.$widget.addClass(this.id + '-widget');
 
-    // Initialialize media type and widget.
+    // Initialize media type and widget.
     this.initMediaType();
     this.initWidget();
 
@@ -80,17 +80,21 @@
   /**
    * Extend the jQueryUiFilter prototype.
    */
-  $.extend(jQueryUiFilter.prototype, /** @lends Drupal.jQueryUiFilter# */ {
+  $.extend(jQueryUiFilter.prototype, /** @extends Drupal.jQueryUiFilter# */ {
 
     /**
      * @method
      */
-    initWidget: function () {return false},
+    initWidget: function () {
+      return false
+    },
 
     /**
      * @method
      */
-    setActive: function () {return false},
+    setActive: function () {
+      return false
+    },
 
     /**
      * @method
@@ -142,14 +146,14 @@
             value = JSON.parse(value);
           } catch (error) {
             if (window.console) {
-              window.console.error('Unable to parse ' + value  + '. Error: ' + error.message);
+              window.console.error('Unable to parse ' + value + '. Error: ' + error.message);
             }
           }
         }
         options[name] = value;
       }
 
-      // Expand custom collapsed option into the required collasible and active
+      // Expand custom collapsed option into the required collapsible and active
       // options.
       if (options.collapsed) {
         options.collapsible = true;
