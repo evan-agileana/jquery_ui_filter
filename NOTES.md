@@ -60,7 +60,7 @@ Steps for creating a new release
     git push --tags
     git push origin tag 8.x-1.0-VERSION
 
-[Create new release](https://www.drupal.org/node/add/project-release/2664066)
+[Create new release](https://www.drupal.org/node/add/project-release/1418164)
 
 
 6. Update project page
@@ -70,4 +70,4 @@ Steps for creating a new release
     
      drush readme-export jquery_ui_filter
 
-[Edit project page](https://www.drupal.org/node/2664066/edit)
+[Edit project page](https://www.drupal.org/node/1418164/edit)
