@@ -9,7 +9,7 @@ CONTENTS OF THIS FILE
  * Similar Modules
  * Issues
 
-INTRODUCTION
+Introduction
 ------------
 
 The jQueryUI filter converts static HTML to a jQuery UI accordion or tabs widget.
@@ -33,7 +33,8 @@ accordion widget.
 Learn more about jQueryUI's [accordion](http://jqueryui.com/demos/accordion/) 
 and [tabs](http://jqueryui.com/demos/tabs/) widget.
 
-USAGE
+
+Usage
 -----
 
 ### Accordion
@@ -46,7 +47,8 @@ closed.
 
 Use `[tabs]` and `[/tabs]` to create a jQuery UI tabs.
 
-FEATURES
+
+Features
 --------
 
 - Supports all jQuery UI accordion and tabs options.
@@ -55,7 +57,8 @@ FEATURES
 - Gracefully degrades when JavaScript is disabled.
 - Defaults to original markup when an accordion or tabs widget is printed.
 
-INSTALLATION
+
+Installation
 ------------
 
 1. Copy/upload the jquery_ui_filter.module to the modules directory of your
@@ -75,7 +78,8 @@ INSTALLATION
 6. (optional) Visit the 'Configuration > Content authoring > Text formats and editors > jQuery UI filter'
    (admin/config/content/formats/jquery_ui_filter).
 
-NOTES
+
+Notes
 -----
 
 ### General
@@ -121,14 +125,15 @@ NOTES
   - The `tests` directory contains manual test scripts and static HTML5 examples 
     for testing the front end JavaScript behavior.
 
-SIMILAR MODULES
+
+Similar Modules
 ---------------
 
 - [Quick tabs](http://drupal.org/project/quicktabs)   
   Create blocks of tabbed views and blocks.
   
 
-AUTHOR/MAINTAINER
+Author/Maintainer
 -----------------
 
 - [Jacob Rockowitz](http://drupal.org/user/371407)
