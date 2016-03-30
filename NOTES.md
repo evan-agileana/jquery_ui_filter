@@ -68,6 +68,6 @@ Steps for creating a new release
 
 [Export README.md](https://www.drupal.org/project/readme)
     
-     drush readme-export jquery_ui_filter
+     drush readme-export --project jquery_ui_filter
 
 [Edit project page](https://www.drupal.org/node/1418164/edit)
