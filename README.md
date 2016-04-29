@@ -64,10 +64,10 @@ Installation
 1. Copy/upload the jquery_ui_filter.module to the modules directory of your
    Drupal installation.
 
-2. Enable the 'jQueryUI filter' modules in 'Extend'. (admin/modules)
+2. Enable the 'jQueryUI filter' modules in 'Extend'. (/admin/modules)
 
 3. Visit the 'Configuration > Content authoring > Text formats and editors'
-   (admin/config/content/formats).
+   (/admin/config/content/formats).
 
 4. Enable (check) the jQueryUI filter under the list of filters and save
    the configuration.
@@ -76,7 +76,7 @@ Installation
    tabs widgets' filter must be after the 'Correct faulty and chopped off HTML' filter.
 
 6. (optional) Visit the 'Configuration > Content authoring > Text formats and editors > jQuery UI filter'
-   (admin/config/content/formats/jquery_ui_filter).
+   (/admin/config/content/formats/jquery_ui_filter).
 
 
 Notes

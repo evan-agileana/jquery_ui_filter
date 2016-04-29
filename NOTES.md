@@ -28,10 +28,10 @@ Steps for creating a new release
 [Commandline](https://www.drupal.org/node/1587138)
 
     # Check Drupal coding standards
-    phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,js,css,info,txt,md,yml modules/sandbox/jquery_ui_filter
+    phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,js,css,info modules/sandbox/jquery_ui_filter
 
     # Check Drupal best practices
-    phpcs --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,js,css,info,txt,md,yml modules/sandbox/jquery_ui_filter
+    phpcs --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,js,css,info modules/sandbox/jquery_ui_filter
 
 
 3. Run tests
