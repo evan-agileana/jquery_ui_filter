@@ -130,7 +130,7 @@ class jQueryUiFilter extends FilterBase {
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $form['settings'] = [
-      '#markup' => $this->t('See the <a href="@href">jQuery UI filter</a> settings form to modify the accordion and tabs widget\'s global settings', ['@href' => Url::fromRoute('jquery_ui_filter.settings')]),
+      '#markup' => $this->t('See the <a href="@href">jQuery UI filter</a> settings form to modify the accordion and tabs widget\'s global settings', ['@href' => Url::fromRoute('jquery_ui_filter.settings')->toString()]),
     ];
     return $form;
   }
