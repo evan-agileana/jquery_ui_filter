@@ -1,19 +1,31 @@
 {
-  "name": "drupal/jquery_ui_filter",
-  "description": "Converts static HTML to a jQuery UI Accordion or Tabs widget",
-  "type": "drupal-module",
-  "license": "GPL-2.0+",
-  "minimum-stability": "dev",
-  "homepage": "https://drupal.org/project/jquery_ui_filter",
-  "authors": [
-    {
-      "name": "Jacob Rockowitz (jrockowitz)",
-      "homepage": "https://www.drupal.org/u/jrockowitz",
-      "role": "Maintainer"
+    "name": "drupal/jquery_ui_filter",
+    "description": "Converts static HTML to a jQuery UI Accordion or Tabs widget",
+    "type": "drupal-module",
+    "license": "GPL-2.0+",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "homepage": "https://drupal.org/project/jquery_ui_filter",
+    "authors": [
+        {
+            "name": "Jacob Rockowitz (jrockowitz)",
+            "homepage": "https://www.drupal.org/u/jrockowitz",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "issues": "https://drupal.org/project/issues/jquery_ui_filter",
+        "source": "http://cgit.drupalcode.org/jquery_ui_filter"
+    },
+    "repositories": {
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    },
+    "require": {
+        "drupal/jquery_ui_tabs": "^1.1",
+        "drupal/jquery_ui_accordion": "^1.1",
+        "drupal/jquery_ui": "^1.4"
     }
-  ],
-  "support": {
-    "issues": "https://drupal.org/project/issues/jquery_ui_filter",
-    "source": "http://cgit.drupalcode.org/jquery_ui_filter"
-  }
 }
