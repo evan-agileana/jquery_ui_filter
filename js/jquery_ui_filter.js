@@ -264,7 +264,7 @@
         $ul,
         $container;
 
-      $widget.children().each(function () {
+      this.findDivWithHeaderTag().each(function () {
         if (this.tagName.toLowerCase() == options.headerTag.toLowerCase()) {
           // Get/define (current) tab id.
           id = this.id || $(this).text().toLowerCase().replace(/[^-a-z0-9]+/gm, '-');
@@ -291,6 +291,24 @@
         }
       });
       $widget.tabs(options);
+    },
+
+    /**
+     * Sometimes the headerTag is not a direct child of the tabs div.
+     * 
+     * TODO: make this recursive
+     * 
+     * @returns jquery element
+     */
+    findDivWithHeaderTag: function(){
+      const $widget = this.$widget
+      const options = this.options
+      // if there is no headerTag in the first div and there is one in
+      // in the child, use the child 
+      if($widget.children(options.headerTag).length === 0 && $widget.children(("div")).children(options.headerTag).length > 0) {
+        return $widget.children(("div")).children()
+      }
+      return $widget.children()
     },
 
     /**
